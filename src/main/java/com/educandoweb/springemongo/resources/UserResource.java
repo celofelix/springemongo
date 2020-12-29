@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.educandoweb.springemongo.domain.Post;
 import com.educandoweb.springemongo.domain.User;
 import com.educandoweb.springemongo.dto.UserDTO;
 import com.educandoweb.springemongo.services.UserService;
@@ -60,7 +61,12 @@ public class UserResource {
 		User user = userService.fromDTO(userDTO);
 		user.setId(id);
 		userService.update(user);
-		return ResponseEntity.noContent().build();
-		
+		return ResponseEntity.noContent().build();		
+	}
+	
+	@GetMapping("/{id}/posts")
+	public ResponseEntity<List<Post>> findPosts(@PathVariable String id) {
+		User user = userService.findById(id);
+		return ResponseEntity.ok().body(user.getPosts());
 	}
 }
